@@ -16,12 +16,6 @@ public class Domain {
         try {
           itemService.add(item);
 
-          /*List<Item> addressList = itemService.getAll();
-          List<Employee> employeeList = employeeService.getAll();
-          for (Employee e : employeeList) {
-              System.out.println(e);
-          }*/
-
       } catch (SQLException e) {
           e.printStackTrace();
       }
