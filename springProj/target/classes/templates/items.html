@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <title>Товары</title>
+</head>
+<body>
+<header th:fragment="header" class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+        <span class="fs-4">Spring Proj</span>
+    </a>
+
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a href="../" class="nav-link text-dark">Главная</a></li>
+        <li class="nav-item"><a href="/items" class="nav-link text-dark">Товары</a></li>
+        <li class="nav-item"><a href="/busket" class="nav-link text-dark">Корзина</a></li>
+        <li class="nav-item"><a href="/logout" class="nav-link text-dark">Выйти</a></li>
+    </ul>
+</header>
+<main class="container ">
+    <h1>Товары</h1>
+    <br>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Наименование</th>
+            <th>Цена</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody th:each="el : ${items}">
+            <tr>
+                <th th:text="${el.id}"></th>
+                <th th:text="${el.name}"></th>
+                <th th:text="${el.price}"></th>
+
+                <th class="text-center">
+                    <form th:action="@{/addToBusket}" method="POST">
+                        <input type="hidden" name="itemId" th:value="${el.id}">
+                        <button class="btn btn-dark" type="submit">В корзину</button>
+                    </form>
+                </th>
+
+                <th class="text-center">
+                    <form th:action="@{/editItem}" method="POST">
+                        <input type="hidden" name="itemId" th:value="${el.id}">
+                        <button class="btn btn-dark" type="submit">Изменить</button>
+                    </form>
+                </th>
+
+                <th class="text-center">
+                    <form th:action="@{/delItem}" method="POST">
+                        <input type="hidden" name="itemId" th:value="${el.id}">
+                        <button class="btn btn-dark" type="submit">Удалить</button>
+                    </form>
+                </th>
+            </tr>
+        </tbody>
+    </table>
+    <form th:action="@{/updateItem}" method="POST">
+
+        <table class="table table-bordered">
+           <tr th:if="${itemEdit != null}" th:each="el : ${itemEdit}">
+               <th><input type="hidden" name="itemId" th:if="${itemEdit != null}" th:value="${el.id}"></th>
+               <th class="text-center"><input type="text" name="name" th:if="${itemEdit != null}" th:value="${el.name}" required></th>
+               <th class="text-center"><input type="number" name="price" th:if="${itemEdit != null}" th:value="${el.price}" required></th>
+               <th class="text-center"><button class="btn btn-dark" type="submit">Обновить</button></th>
+           </tr>
+        </table>
+        </form>
+        <form th:action="@{/addItem}" method="POST">
+            <table class="table table-bordered">
+            <tr th:if="${itemEdit == null}">
+                <th class="text-center"><input type="text" name="name" placeholder="Введите наименовани" required ></th>
+                <th class="text-center"><input type="number" name="price" placeholder="Введите цену"  required></th>
+                <th class="text-center"><button class="btn btn-dark" type="submit">Добавить</button></th>
+            </tr>
+        </table>
+
+
+    </form>
+</main>
+
+</body>
+</html>
